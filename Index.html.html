@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Management System</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .main-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .main-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+        }
+        .main-tab:hover {
+            background-color: #e9e9e9;
+        }
+        .main-tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+            font-weight: 600;
+            color: #3498db;
+            border-top: 2px solid #3498db;
+        }
+        .sub-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .sub-tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .sub-tab:hover {
+            background-color: #e9e9e9;
+        }
+        .sub-tab.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+            font-weight: 600;
+            color: #3498db;
+            border-top: 2px solid #3498db;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 15px;
+            transition: border 0.3s ease;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        .currency-selector {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f7fd;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn i {
+            margin-right: 5px;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        .btn-success {
+            background-color: #2ecc71;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+        }
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        .btn-warning:hover {
+            background-color: #d35400;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #f8f9fa;
+        }
+        .grand-total-row {
+            font-weight: bold;
+            background-color: #e8f4fc;
+            color: #2c3e50;
+        }
+        .currency-symbol {
+            font-weight: bold;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .status.shipped {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.departed {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .order-details, .expense-details {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .order-details.active, .expense-details.active {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .order-header, .expense-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .order-info, .expense-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .order-info div, .expense-info div {
+            display: flex;
+        }
+        .order-info div span:first-child, .expense-info div span:first-child {
+            font-weight: 600;
+            min-width: 150px;
+            color: #495057;
+        }
+        .notes {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            background-color: #fff;
+        }
+        .delete-all {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+        }
+        .rate-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            padding: 5px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .currency-option {
+            display: flex;
+            align-items: center;
+        }
+        .currency-flag {
+            width: 20px;
+            height: 15px;
+            margin-right: 8px;
+            border: 1px solid #ddd;
+        }
+        .currency-display {
+            display: flex;
+            align-items: center;
+        }
+        .summary-totals {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .summary-total-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #3498db;
+        }
+        .summary-total-card h3 {
+            margin-bottom: 10px;
+            color: #495057;
+            font-size: 16px;
+        }
+        .summary-total-card .amount {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .summary-total-card .currency {
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+        .payment-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .payment-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        /* Print-specific styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .order-details, .order-details *,
+            .expense-details, .expense-details * {
+                visibility: visible;
+            }
+            .order-details, .expense-details {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                box-shadow: none;
+                border: none;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .order-header, .expense-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .summary-totals {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Business Management System</h1>
+        
+        <div class="main-tabs">
+            <div class="main-tab active" data-tab="supplier">Supplier Management</div>
+            <div class="main-tab" data-tab="expenses">Expenses Management</div>
+        </div>
+        
+        <!-- Supplier Management Tab -->
+        <div id="supplierManagement" class="tab-content active">
+            <div class="sub-tabs">
+                <div class="sub-tab active" data-subtab="supplier-entry">New Order</div>
+                <div class="sub-tab" data-subtab="supplier-summary">Order Summary</div>
+            </div>
+            
+            <!-- Supplier Entry Form Tab -->
+            <div id="supplierEntryForm" class="tab-content active">
+                <div class="form-group">
+                    <label for="orderDate">Order Date</label>
+                    <input type="date" id="orderDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="supplier">Supplier</label>
+                    <select id="supplier" required>
+                        <option value="">-- Select Supplier --</option>
+                        <option value="Lazada">Lazada</option>
+                        <option value="Shoppee">Shoppee</option>
+                        <option value="Shein">Shein</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="currency">Select Currency</label>
+                    <select id="currency" class="currency-selector" required>
+                        <option value="">-- Select Currency --</option>
+                        <option value="MVR" data-symbol="MVR" data-flag="https://flagcdn.com/w20/mv.png">Maldivian Rufiyaa (MVR)</option>
+                        <option value="USD" data-symbol="$" data-flag="https://flagcdn.com/w20/us.png">US Dollar (USD)</option>
+                        <option value="AED" data-symbol="AED" data-flag="https://flagcdn.com/w20/ae.png">UAE Dirham (AED)</option>
+                        <option value="CNY" data-symbol="¥" data-flag="https://flagcdn.com/w20/cn.png">Chinese Yuan (CNY)</option>
+                        <option value="EUR" data-symbol="€" data-flag="https://flagcdn.com/w20/eu.png">Euro (EUR)</option>
+                        <option value="IDR" data-symbol="Rp" data-flag="https://flagcdn.com/w20/id.png">Indonesian Rupiah (IDR)</option>
+                        <option value="INR" data-symbol="₹" data-flag="https://flagcdn.com/w20/in.png">Indian Rupee (INR)</option>
+                        <option value="JPY" data-symbol="¥" data-flag="https://flagcdn.com/w20/jp.png">Japanese Yen (JPY)</option>
+                        <option value="LKR" data-symbol="Rs" data-flag="https://flagcdn.com/w20/lk.png">Sri Lankan Rupee (LKR)</option>
+                        <option value="MYR" data-symbol="RM" data-flag="https://flagcdn.com/w20/my.png">Malaysian Ringgit (MYR)</option>
+                        <option value="NZD" data-symbol="NZ$" data-flag="https://flagcdn.com/w20/nz.png">New Zealand Dollar (NZD)</option>
+                        <option value="SAR" data-symbol="SAR" data-flag="https://flagcdn.com/w20/sa.png">Saudi Riyal (SAR)</option>
+                        <option value="SEK" data-symbol="kr" data-flag="https://flagcdn.com/w20/se.png">Swedish Krona (SEK)</option>
+                        <option value="SGD" data-symbol="S$" data-flag="https://flagcdn.com/w20/sg.png">Singapore Dollar (SGD)</option>
+                        <option value="THB" data-symbol="฿" data-flag="https://flagcdn.com/w20/th.png">Thai Baht (THB)</option>
+                    </select>
+                    <div id="rateInfo" class="rate-info">Exchange rates will be loaded when currency is selected</div>
+                </div>
+                
+                <h2>Order Items (<span id="currentCurrency">Select currency</span> <span id="currentCurrencyFlag"></span>)</h2>
+                <table id="orderTable">
+                    <thead>
+                        <tr>
+                            <th width="40%">Item Description</th>
+                            <th width="15%">Quantity</th>
+                            <th width="20%">Unit Price (<span class="currency-symbol">--</span>)</th>
+                            <th width="20%">Total (<span class="currency-symbol">--</span>)</th>
+                            <th width="5%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderItems">
+                        <!-- Items will be added here -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="3">Subtotal</td>
+                            <td id="subtotal"><span class="currency-symbol">--</span> 0.00</td>
+                            <td></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3">Grand Total</td>
+                            <td id="grandTotal"><span class="currency-symbol">--</span> 0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                
+                <button type="button" class="btn btn-primary" id="addItem"><i class="fas fa-plus"></i> Add Item</button>
+                
+                <div class="payment-section">
+                    <div class="payment-row">
+                        <span>Total Amount:</span>
+                        <span id="totalAmount"><span class="currency-symbol">--</span> 0.00</span>
+                    </div>
+                    <div class="payment-row">
+                        <span>Amount Paid (MVR):</span>
+                        <span>
+                            <input type="number" id="amountPaid" min="0" step="0.01" value="0.00" style="width: 120px;">
+                            <span>MVR</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" rows="3"></textarea>
+                </div>
+                
+                <button type="button" class="btn btn-success" id="submitOrder"><i class="fas fa-paper-plane"></i> Submit Order</button>
+            </div>
+            
+            <!-- Supplier Order Summary Tab -->
+            <div id="supplierOrderSummary" class="tab-content">
+                <div id="supplierSummaryTotals" class="summary-totals" style="display: none;">
+                    <div class="summary-total-card">
+                        <h3>Total Orders</h3>
+                        <div class="amount" id="totalOrders">0</div>
+                    </div>
+                    <div class="summary-total-card">
+                        <h3>Total Subtotal (MVR)</h3>
+                        <div class="amount" id="totalSubtotal">0.00</div>
+                        <div class="currency">MVR</div>
+                    </div>
+                    <div class="summary-total-card">
+                        <h3>Total Amount Paid (MVR)</h3>
+                        <div class="amount" id="totalPaid">0.00</div>
+                        <div class="currency">MVR</div>
+                    </div>
+                    <div class="summary-total-card no-print">
+                        <h3>Export Summary</h3>
+                        <button class="btn btn-warning" id="exportSupplierSummaryPdf" style="width: 100%; margin-top: 10px;">
+                            <i class="fas fa-file-pdf"></i> Export to PDF
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="supplierOrdersTableContainer">
+                    <div id="supplierLoadingIndicator" class="loading">Loading orders...</div>
+                    <table id="supplierOrdersTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Order Number</th>
+                                <th>Supplier</th>
+                                <th>Subtotal</th>
+                                <th>Amount Paid (MVR)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplierOrdersList">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="grand-total-row">
+                                <td colspan="3">Grand Totals</td>
+                                <td id="supplierGrandSubtotal">MVR 0.00</td>
+                                <td id="supplierGrandPaid">MVR 0.00</td>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="delete-all">
+                    <button class="btn btn-danger" id="deleteAllSupplierOrders"><i class="fas fa-trash-alt"></i> Delete All Orders</button>
+                </div>
+                
+                <div id="supplierOrderDetails" class="order-details">
+                    <!-- Detailed order view will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Expenses Management Tab -->
+        <div id="expensesManagement" class="tab-content">
+            <div class="sub-tabs">
+                <div class="sub-tab active" data-subtab="expenses-entry">New Expense</div>
+                <div class="sub-tab" data-subtab="expenses-summary">Expenses Summary</div>
+            </div>
+            
+            <!-- Expenses Entry Form Tab -->
+            <div id="expensesEntryForm" class="tab-content active">
+                <div class="form-group">
+                    <label for="expenseDate">Expense Date</label>
+                    <input type="date" id="expenseDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="expenseOrderNumber">Order Number (if applicable)</label>
+                    <input type="text" id="expenseOrderNumber" placeholder="Optional">
+                </div>
+                
+                <h2>Expense Items</h2>
+                <table id="expenseTable">
+                    <thead>
+                        <tr>
+                            <th width="40%">Item Name</th>
+                            <th width="15%">Quantity</th>
+                            <th width="40%">Category</th>
+                            <th width="5%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenseItems">
+                        <!-- Items will be added here -->
+                    </tbody>
+                </table>
+                
+                <button type="button" class="btn btn-primary" id="addExpenseItem"><i class="fas fa-plus"></i> Add Item</button>
+                
+                <div class="payment-section" id="expensePaymentsSection" style="display: none;">
+                    <h3>Expense Payments</h3>
+                    <div class="form-group">
+                        <label for="expenseCategory">Category</label>
+                        <select id="expenseCategory" class="form-control">
+                            <option value="REDBOX">REDBOX</option>
+                            <option value="WEIGHT">WEIGHT</option>
+                            <option value="CLEARENCE">CLEARENCE</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="totalWeightPayment">Total Payment Paid for Weight (MVR)</label>
+                        <input type="number" id="totalWeightPayment" min="0" step="0.01" value="0.00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="totalClearencePayment">Total Payment Paid for Clearence (MVR)</label>
+                        <input type="number" id="totalClearencePayment" min="0" step="0.01" value="0.00">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="expenseNotes">Notes</label>
+                    <textarea id="expenseNotes" rows="3"></textarea>
+                </div>
+                
+                <div id="expenseTotalsSection" style="display: none;">
+                    <table>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td>Total Weight Payment (MVR)</td>
+                                <td id="expenseWeightTotal">0.00</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td>Total Clearence Payment (MVR)</td>
+                                <td id="expenseClearenceTotal">0.00</td>
+                            </tr>
+                            <tr class="grand-total-row">
+                                <td>Grand Total (MVR)</td>
+                                <td id="expenseTotal">0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <button type="button" class="btn btn-success" id="submitExpense"><i class="fas fa-paper-plane"></i> Submit Expense</button>
+            </div>
+            
+            <!-- Expenses Summary Tab -->
+            <div id="expensesSummary" class="tab-content">
+                <div id="expensesSummaryTotals" class="summary-totals" style="display: none;">
+                    <div class="summary-total-card">
+                        <h3>Total Expenses</h3>
+                        <div class="amount" id="totalExpenses">0</div>
+                    </div>
+                    <div class="summary-total-card">
+                        <h3>Total Weight (MVR)</h3>
+                        <div class="amount" id="totalWeight">0.00</div>
+                        <div class="currency">MVR</div>
+                    </div>
+                    <div class="summary-total-card">
+                        <h3>Total Clearence (MVR)</h3>
+                        <div class="amount" id="totalClearence">0.00</div>
+                        <div class="currency">MVR</div>
+                    </div>
+                    <div class="summary-total-card">
+                        <h3>Total Amount (MVR)</h3>
+                        <div class="amount" id="totalExpensesAmount">0.00</div>
+                        <div class="currency">MVR</div>
+                    </div>
+                    <div class="summary-total-card no-print">
+                        <h3>Export Summary</h3>
+                        <button class="btn btn-warning" id="exportExpensesSummaryPdf" style="width: 100%; margin-top: 10px;">
+                            <i class="fas fa-file-pdf"></i> Export to PDF
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="expensesTableContainer">
+                    <div id="expensesLoadingIndicator" class="loading">Loading expenses...</div>
+                    <table id="expensesTable" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Expense #</th>
+                                <th>Order #</th>
+                                <th>Weight (MVR)</th>
+                                <th>Clearence (MVR)</th>
+                                <th>Total (MVR)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expensesList">
+                            <!-- Expenses will be loaded here -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="grand-total-row">
+                                <td colspan="3">Grand Totals</td>
+                                <td id="expensesGrandWeight">0.00</td>
+                                <td id="expensesGrandClearence">0.00</td>
+                                <td id="expensesGrandTotal">0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="delete-all">
+                    <button class="btn btn-danger" id="deleteAllExpenses"><i class="fas fa-trash-alt"></i> Delete All Expenses</button>
+                </div>
+                
+                <div id="expenseDetails" class="expense-details">
+                    <!-- Detailed expense view will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCIpv7bzTWslsvUt2kvCw4ED18GAyYiPSY",
+            authDomain: "suppliermanagement-45701.firebaseapp.com",
+            projectId: "suppliermanagement-45701",
+            storageBucket: "suppliermanagement-45701.appspot.com",
+            messagingSenderId: "292117808833",
+            appId: "1:292117808833:web:d6694a6d8a09daba83f640",
+            measurementId: "G-FJWKVED5HH"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+
+        // Exchange rates with MVR as base currency (exactly as requested)
+        const EXCHANGE_RATES = {
+            MVR: 1,      // Base currency
+            USD: 15.42,  // 1 USD = 15.42 MVR
+            AED: 4.20,   // 1 AED = 4.20 MVR
+            CNY: 2.13,   // 1 CNY = 2.13 MVR
+            EUR: 16.80,  // 1 EUR = 16.80 MVR
+            IDR: 0.0010, // 1 IDR = 0.0010 MVR
+            INR: 0.19,   // 1 INR = 0.19 MVR
+            JPY: 0.11,   // 1 JPY = 0.11 MVR
+            LKR: 0.051,  // 1 LKR = 0.051 MVR
+            MYR: 3.45,   // 1 MYR = 3.45 MVR
+            NZD: 9.50,   // 1 NZD = 9.50 MVR
+            SAR: 4.11,   // 1 SAR = 4.11 MVR
+            SEK: 1.50,   // 1 SEK = 1.50 MVR
+            SGD: 11.50,  // 1 SGD = 11.50 MVR
+            THB: 0.43    // 1 THB = 0.43 MVR
+        };
+
+        // Expense categories
+        const EXPENSE_CATEGORIES = [
+            "REDBOX",
+            "WEIGHT",
+            "CLEARENCE",
+            "OTHER"
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Main tab functionality
+            const mainTabs = document.querySelectorAll('.main-tab');
+            const mainTabContents = document.querySelectorAll('.tab-content');
+            
+            mainTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all main tabs and contents
+                    mainTabs.forEach(t => t.classList.remove('active'));
+                    mainTabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    this.classList.add('active');
+                    const tabContentId = this.dataset.tab === 'supplier' ? 'supplierManagement' : 'expensesManagement';
+                    document.getElementById(tabContentId).classList.add('active');
+                    
+                    // Reset sub-tabs to first tab
+                    const subTabs = document.querySelectorAll(`#${tabContentId} .sub-tab`);
+                    const subTabContents = document.querySelectorAll(`#${tabContentId} .tab-content`);
+                    
+                    subTabs.forEach(st => st.classList.remove('active'));
+                    subTabContents.forEach(stc => stc.classList.remove('active'));
+                    
+                    if (subTabs.length > 0) {
+                        subTabs[0].classList.add('active');
+                        const firstSubTabContentId = subTabs[0].dataset.subtab === 'supplier-entry' ? 'supplierEntryForm' : 
+                                                    subTabs[0].dataset.subtab === 'supplier-summary' ? 'supplierOrderSummary' :
+                                                    subTabs[0].dataset.subtab === 'expenses-entry' ? 'expensesEntryForm' : 'expensesSummary';
+                        document.getElementById(firstSubTabContentId).classList.add('active');
+                    }
+                    
+                    // If summary tab is clicked, load data
+                    if (this.dataset.tab === 'supplier' && document.querySelector('#supplierManagement .sub-tab.active').dataset.subtab === 'supplier-summary') {
+                        loadSupplierOrders();
+                    } else if (this.dataset.tab === 'expenses' && document.querySelector('#expensesManagement .sub-tab.active').dataset.subtab === 'expenses-summary') {
+                        loadExpenses();
+                    }
+                });
+            });
+
+            // Sub-tab functionality
+            function setupSubTabs(containerId) {
+                const subTabs = document.querySelectorAll(`#${containerId} .sub-tab`);
+                const subTabContents = document.querySelectorAll(`#${containerId} .tab-content`);
+                
+                subTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // Remove active class from all sub tabs and contents
+                        subTabs.forEach(t => t.classList.remove('active'));
+                        subTabContents.forEach(c => c.classList.remove('active'));
+                        
+                        // Add active class to clicked tab and corresponding content
+                        this.classList.add('active');
+                        const tabContentId = this.dataset.subtab === 'supplier-entry' ? 'supplierEntryForm' : 
+                                            this.dataset.subtab === 'supplier-summary' ? 'supplierOrderSummary' :
+                                            this.dataset.subtab === 'expenses-entry' ? 'expensesEntryForm' : 'expensesSummary';
+                        document.getElementById(tabContentId).classList.add('active');
+                        
+                        // If summary tab is clicked, load data
+                        if (this.dataset.subtab === 'supplier-summary') {
+                            loadSupplierOrders();
+                        } else if (this.dataset.subtab === 'expenses-summary') {
+                            loadExpenses();
+                        }
+                    });
+                });
+            }
+            
+            // Setup sub-tabs for both main tabs
+            setupSubTabs('supplierManagement');
+            setupSubTabs('expensesManagement');
+
+            // ==============================================
+            // SUPPLIER MANAGEMENT FUNCTIONALITY
+            // ==============================================
+            const orderItems = document.getElementById('orderItems');
+            const addItemBtn = document.getElementById('addItem');
+            const submitOrderBtn = document.getElementById('submitOrder');
+            const subtotalCell = document.getElementById('subtotal');
+            const grandTotalCell = document.getElementById('grandTotal');
+            const totalAmountCell = document.getElementById('totalAmount');
+            const amountPaidInput = document.getElementById('amountPaid');
+            const currencySelect = document.getElementById('currency');
+            const currencySymbols = document.querySelectorAll('.currency-symbol');
+            const currentCurrencySpan = document.getElementById('currentCurrency');
+            const currentCurrencyFlag = document.getElementById('currentCurrencyFlag');
+            const deleteAllSupplierOrdersBtn = document.getElementById('deleteAllSupplierOrders');
+            const rateInfo = document.getElementById('rateInfo');
+            const exportSupplierSummaryPdf = document.getElementById('exportSupplierSummaryPdf');
+            
+            // Current currency settings
+            let currentCurrency = '';
+            let currentSymbol = '';
+            
+            // Sample products (in MVR)
+            const products = [
+                { id: 1, name: "Electronic Component A", price: 12.50 },
+                { id: 2, name: "Mechanical Part B", price: 8.75 },
+                { id: 3, name: "Raw Material C", price: 25.00 }
+            ];
+            
+            // Add initial empty row
+            addItemRow();
+            
+            // Currency selection
+            currencySelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                currentCurrency = this.value;
+                currentSymbol = selectedOption.dataset.symbol;
+                const flagUrl = selectedOption.dataset.flag;
+                
+                currentCurrencySpan.textContent = currentCurrency;
+                
+                // Update currency flag display
+                if (flagUrl) {
+                    currentCurrencyFlag.innerHTML = `<img src="${flagUrl}" class="currency-flag" alt="${currentCurrency} Flag">`;
+                } else {
+                    currentCurrencyFlag.innerHTML = '';
+                }
+                
+                // Update all currency symbols
+                currencySymbols.forEach(symbol => {
+                    symbol.textContent = currentSymbol;
+                });
+                
+                if (currentCurrency) {
+                    // Show exchange rate info
+                    if (currentCurrency === 'MVR') {
+                        rateInfo.textContent = "Base currency is MVR (1 MVR = 1 MVR)";
+                    } else {
+                        rateInfo.textContent = `1 ${currentCurrency} = ${EXCHANGE_RATES[currentCurrency].toFixed(4)} MVR`;
+                    }
+                } else {
+                    rateInfo.textContent = "Please select a currency";
+                }
+                
+                // Update all displayed amounts
+                updateAllAmounts();
+            });
+            
+            // Add item row
+            addItemBtn.addEventListener('click', addItemRow);
+            
+            // Submit order
+            submitOrderBtn.addEventListener('click', submitOrder);
+            
+            // Delete all orders
+            deleteAllSupplierOrdersBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete ALL orders? This cannot be undone.')) {
+                    database.ref('orders').remove()
+                        .then(() => {
+                            alert('All orders have been deleted.');
+                            loadSupplierOrders(); // Refresh the view
+                        })
+                        .catch(error => {
+                            alert('Error deleting orders: ' + error.message);
+                        });
+                }
+            });
+            
+            // Export summary to PDF
+            exportSupplierSummaryPdf.addEventListener('click', exportSupplierSummaryToPDF);
+            
+            function addItemRow() {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <select class="item-select">
+                            <option value="">-- Select Product --</option>
+                            ${products.map(p => 
+                                `<option value="${p.id}" data-price="${p.price}">${p.name}</option>`
+                            ).join('')}
+                            <option value="custom">Custom Item</option>
+                        </select>
+                        <input type="text" class="custom-item" placeholder="Item description" style="display: none; margin-top: 5px; width: 100%;">
+                    </td>
+                    <td><input type="number" class="quantity" min="1" value="1"></td>
+                    <td><input type="number" class="unit-price" min="0" step="0.01" value="0.00"></td>
+                    <td class="item-total"><span class="currency-symbol">${currentSymbol || '--'}</span> 0.00</td>
+                    <td><button type="button" class="btn btn-danger remove-item"><i class="fas fa-times"></i></button></td>
+                `;
+                orderItems.appendChild(row);
+                
+                // Add event listeners
+                const select = row.querySelector('.item-select');
+                const customInput = row.querySelector('.custom-item');
+                const qtyInput = row.querySelector('.quantity');
+                const priceInput = row.querySelector('.unit-price');
+                const removeBtn = row.querySelector('.remove-item');
+                
+                select.addEventListener('change', function() {
+                    if (this.value === 'custom') {
+                        customInput.style.display = 'block';
+                        priceInput.value = '0.00';
+                    } else {
+                        customInput.style.display = 'none';
+                        const selectedOption = this.options[this.selectedIndex];
+                        if (selectedOption.dataset.price) {
+                            // Convert product price (in MVR) to selected currency
+                            const priceInMVR = parseFloat(selectedOption.dataset.price);
+                            const priceInSelectedCurrency = currentCurrency === 'MVR' 
+                                ? priceInMVR 
+                                : priceInMVR / EXCHANGE_RATES[currentCurrency];
+                            priceInput.value = priceInSelectedCurrency.toFixed(2);
+                        }
+                    }
+                    calculateRowTotal(row);
+                });
+                
+                qtyInput.addEventListener('input', () => calculateRowTotal(row));
+                priceInput.addEventListener('input', () => calculateRowTotal(row));
+                removeBtn.addEventListener('click', () => {
+                    row.remove();
+                    updateTotals();
+                });
+                
+                calculateRowTotal(row);
+            }
+            
+            function calculateRowTotal(row) {
+                const qty = parseFloat(row.querySelector('.quantity').value) || 0;
+                const price = parseFloat(row.querySelector('.unit-price').value) || 0;
+                const total = qty * price;
+                row.querySelector('.item-total').innerHTML = `<span class="currency-symbol">${currentSymbol || '--'}</span> ${total.toFixed(2)}`;
+                updateTotals();
+            }
+            
+            function updateTotals() {
+                const rows = document.querySelectorAll('#orderItems tr');
+                let subtotal = 0;
+                
+                rows.forEach(row => {
+                    const totalText = row.querySelector('.item-total').textContent;
+                    subtotal += parseFloat(totalText.replace(currentSymbol, '')) || 0;
+                });
+                
+                subtotalCell.innerHTML = `<span class="currency-symbol">${currentSymbol || '--'}</span> ${subtotal.toFixed(2)}`;
+                grandTotalCell.innerHTML = `<span class="currency-symbol">${currentSymbol || '--'}</span> ${subtotal.toFixed(2)}`;
+                totalAmountCell.innerHTML = `<span class="currency-symbol">${currentSymbol || '--'}</span> ${subtotal.toFixed(2)}`;
+            }
+            
+            function updateAllAmounts() {
+                const rows = document.querySelectorAll('#orderItems tr');
+                rows.forEach(row => {
+                    calculateRowTotal(row);
+                });
+                updateTotals();
+            }
+            
+            function submitOrder() {
+                const orderDate = document.getElementById('orderDate').value;
+                const supplier = document.getElementById('supplier').value;
+                const notes = document.getElementById('notes').value;
+                const paidInMVR = parseFloat(amountPaidInput.value) || 0;
+                
+                if (!orderDate || !supplier || !currentCurrency) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                const rows = document.querySelectorAll('#orderItems tr');
+                if (rows.length === 0) {
+                    alert('Please add at least one item');
+                    return;
+                }
+                
+                // Collect order items (stored in MVR)
+                const items = [];
+                rows.forEach(row => {
+                    const select = row.querySelector('.item-select');
+                    const customInput = row.querySelector('.custom-item');
+                    const qty = parseFloat(row.querySelector('.quantity').value) || 0;
+                    const priceInSelectedCurrency = parseFloat(row.querySelector('.unit-price').value) || 0;
+                    
+                    // Convert to MVR for storage
+                    let priceInMVR = priceInSelectedCurrency;
+                    if (currentCurrency !== 'MVR') {
+                        priceInMVR = priceInSelectedCurrency * EXCHANGE_RATES[currentCurrency];
+                    }
+                    
+                    let description = '';
+                    if (select.value === 'custom') {
+                        description = customInput.value || 'Custom Item';
+                    } else {
+                        description = select.options[select.selectedIndex].text;
+                    }
+                    
+                    if (description && priceInMVR > 0 && qty > 0) {
+                        items.push({
+                            description: description,
+                            quantity: qty,
+                            unitPrice: priceInMVR,
+                            total: qty * priceInMVR
+                        });
+                    }
+                });
+                
+                if (items.length === 0) {
+                    alert('Please add valid items with quantities and prices');
+                    return;
+                }
+                
+                // Calculate totals (in MVR)
+                const subtotalInMVR = items.reduce((sum, item) => sum + item.total, 0);
+                
+                // Create order object with default status
+                const order = {
+                    orderNumber: generateOrderNumber(),
+                    date: orderDate,
+                    supplier: supplier,
+                    currency: currentCurrency,
+                    exchangeRate: EXCHANGE_RATES[currentCurrency] || 1,
+                    items: items,
+                    subtotal: subtotalInMVR,
+                    total: subtotalInMVR,
+                    paidInMVR: paidInMVR,
+                    status: "Order Shipped", // Default status
+                    notes: notes,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Save to Firebase
+                saveOrderToFirebase(order);
+            }
+            
+            function generateOrderNumber() {
+                const now = new Date();
+                return 'ORD-' + now.getFullYear() + 
+                       String(now.getMonth() + 1).padStart(2, '0') + 
+                       String(now.getDate()).padStart(2, '0') + '-' + 
+                       String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+            }
+            
+            function saveOrderToFirebase(order) {
+                // Push the new order to Firebase
+                const newOrderRef = database.ref('orders').push();
+                newOrderRef.set(order)
+                    .then(() => {
+                        // Show success and switch to summary tab
+                        alert(`Order submitted successfully!\nOrder Number: ${order.orderNumber}`);
+                        
+                        // Switch to summary tab and load orders
+                        document.querySelector('#supplierManagement .sub-tab[data-subtab="supplier-summary"]').click();
+                        
+                        // Reset form
+                        resetSupplierForm();
+                    })
+                    .catch(error => {
+                        alert('Error saving order: ' + error.message);
+                    });
+            }
+            
+            function resetSupplierForm() {
+                document.getElementById('orderDate').value = '';
+                document.getElementById('supplier').value = '';
+                document.getElementById('currency').value = '';
+                document.getElementById('notes').value = '';
+                document.getElementById('amountPaid').value = '0.00';
+                currentCurrency = '';
+                currentSymbol = '';
+                currentCurrencySpan.textContent = 'Select currency';
+                currentCurrencyFlag.innerHTML = '';
+                currencySymbols.forEach(symbol => {
+                    symbol.textContent = '--';
+                });
+                rateInfo.textContent = "Exchange rates will be loaded when currency is selected";
+                orderItems.innerHTML = '';
+                addItemRow();
+            }
+            
+            function loadSupplierOrders() {
+                const ordersList = document.getElementById('supplierOrdersList');
+                const orderDetails = document.getElementById('supplierOrderDetails');
+                const loadingIndicator = document.getElementById('supplierLoadingIndicator');
+                const ordersTable = document.getElementById('supplierOrdersTable');
+                const summaryTotals = document.getElementById('supplierSummaryTotals');
+                
+                // Show loading indicator
+                loadingIndicator.style.display = 'block';
+                ordersTable.style.display = 'none';
+                summaryTotals.style.display = 'none';
+                
+                // Listen for real-time updates from Firebase
+                database.ref('orders').on('value', (snapshot) => {
+                    const orders = [];
+                    let totalSubtotal = 0;
+                    let totalPaid = 0;
+                    
+                    snapshot.forEach((childSnapshot) => {
+                        const order = childSnapshot.val();
+                        order.firebaseId = childSnapshot.key; // Store Firebase ID for updates
+                        orders.push(order);
+                        
+                        // Calculate totals
+                        totalSubtotal += order.subtotal || 0;
+                        totalPaid += order.paidInMVR || 0;
+                    });
+                    
+                    // Update summary totals
+                    document.getElementById('totalOrders').textContent = orders.length;
+                    document.getElementById('totalSubtotal').textContent = totalSubtotal.toFixed(2);
+                    document.getElementById('totalPaid').textContent = totalPaid.toFixed(2);
+                    
+                    if (orders.length === 0) {
+                        ordersList.innerHTML = '<tr><td colspan="7" style="text-align: center;">No orders found</td></tr>';
+                        orderDetails.classList.remove('active');
+                    } else {
+                        renderSupplierOrdersTable(orders);
+                    }
+                    
+                    // Hide loading indicator and show table and totals
+                    loadingIndicator.style.display = 'none';
+                    ordersTable.style.display = 'table';
+                    summaryTotals.style.display = 'grid';
+                });
+            }
+            
+            function renderSupplierOrdersTable(orders) {
+                const ordersList = document.getElementById('supplierOrdersList');
+                
+                // Format currency
+                const formatCurrency = (amount, currency) => {
+                    const symbols = {
+                        MVR: 'MVR',
+                        USD: '$',
+                        AED: 'AED',
+                        CNY: '¥',
+                        EUR: '€',
+                        IDR: 'Rp',
+                        INR: '₹',
+                        JPY: '¥',
+                        LKR: 'Rs',
+                        MYR: 'RM',
+                        NZD: 'NZ$',
+                        SAR: 'SAR',
+                        SEK: 'kr',
+                        SGD: 'S$',
+                        THB: '฿'
+                    };
+                    return `${symbols[currency] || currency} ${amount.toFixed(2)}`;
+                };
+                
+                // Convert amount from MVR to selected currency
+                const convertCurrency = (amountInMVR, targetCurrency, exchangeRate) => {
+                    if (targetCurrency === 'MVR') return amountInMVR;
+                    return amountInMVR / (exchangeRate || 1);
+                };
+                
+                // Sort orders by date (newest first)
+                orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // Calculate grand totals
+                let grandSubtotal = 0;
+                let grandPaid = 0;
+                
+                // Render orders table
+                ordersList.innerHTML = orders.map(order => {
+                    const subtotalInOrderCurrency = convertCurrency(order.subtotal, order.currency, order.exchangeRate);
+                    
+                    // Add to grand totals
+                    grandSubtotal += order.subtotal || 0;
+                    grandPaid += order.paidInMVR || 0;
+                    
+                    return `
+                        <tr data-order-id="${order.orderNumber}" data-firebase-id="${order.firebaseId}">
+                            <td>${new Date(order.date).toLocaleDateString()}</td>
+                            <td>${order.orderNumber}</td>
+                            <td>${order.supplier}</td>
+                            <td>${formatCurrency(subtotalInOrderCurrency, order.currency)}</td>
+                            <td>${formatCurrency(order.paidInMVR, 'MVR')}</td>
+                            <td>
+                                <select class="status-select" data-order="${order.firebaseId}">
+                                    <option value="Order Shipped" ${order.status === 'Order Shipped' ? 'selected' : ''}>Order Shipped</option>
+                                    <option value="Departed From Origin" ${order.status === 'Departed From Origin' ? 'selected' : ''}>Departed From Origin</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary view-order"><i class="fas fa-eye"></i> Summary</button>
+                                <button class="btn btn-danger delete-order" data-order="${order.firebaseId}"><i class="fas fa-trash-alt"></i> Delete</button>
+                                <button class="btn btn-warning export-pdf" data-order="${order.firebaseId}"><i class="fas fa-file-pdf"></i> PDF</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                // Update grand totals row
+                document.getElementById('supplierGrandSubtotal').textContent = formatCurrency(grandSubtotal, 'MVR');
+                document.getElementById('supplierGrandPaid').textContent = formatCurrency(grandPaid, 'MVR');
+                
+                // Add event listeners to view buttons
+                document.querySelectorAll('.view-order').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const firebaseId = this.closest('tr').dataset.firebaseId;
+                        showSupplierOrderDetails(firebaseId);
+                    });
+                });
+                
+                // Add event listeners to delete buttons
+                document.querySelectorAll('.delete-order').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const orderId = this.dataset.order;
+                        if (confirm(`Are you sure you want to delete this order?`)) {
+                            deleteSupplierOrder(orderId);
+                        }
+                    });
+                });
+                
+                // Add event listeners to status selects
+                document.querySelectorAll('.status-select').forEach(select => {
+                    select.addEventListener('change', function() {
+                        updateSupplierOrderStatus(this.dataset.order, this.value);
+                    });
+                });
+                
+                // Add event listeners to PDF export buttons
+                document.querySelectorAll('.export-pdf').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const firebaseId = this.dataset.order;
+                        exportSupplierOrderToPDF(firebaseId);
+                    });
+                });
+            }
+            
+            function showSupplierOrderDetails(firebaseId) {
+                const orderDetails = document.getElementById('supplierOrderDetails');
+                orderDetails.innerHTML = '<div class="loading">Loading order details...</div>';
+                orderDetails.classList.add('active');
+                
+                database.ref('orders/' + firebaseId).once('value')
+                    .then((snapshot) => {
+                        const order = snapshot.val();
+                        renderSupplierOrderDetails(order);
+                    })
+                    .catch(error => {
+                        orderDetails.innerHTML = `<div class="alert">Error loading order: ${error.message}</div>`;
+                    });
+            }
+            
+            function renderSupplierOrderDetails(order) {
+                const orderDetails = document.getElementById('supplierOrderDetails');
+                const formatCurrency = (amount, currency) => {
+                    const symbols = {
+                        MVR: 'MVR',
+                        USD: '$',
+                        AED: 'AED',
+                        CNY: '¥',
+                        EUR: '€',
+                        IDR: 'Rp',
+                        INR: '₹',
+                        JPY: '¥',
+                        LKR: 'Rs',
+                        MYR: 'RM',
+                        NZD: 'NZ$',
+                        SAR: 'SAR',
+                        SEK: 'kr',
+                        SGD: 'S$',
+                        THB: '฿'
+                    };
+                    return `${symbols[currency] || currency} ${amount.toFixed(2)}`;
+                };
+                
+                // Convert amount from MVR to selected currency
+                const convertCurrency = (amountInMVR, targetCurrency, exchangeRate) => {
+                    if (targetCurrency === 'MVR') return amountInMVR;
+                    return amountInMVR / (exchangeRate || 1);
+                };
+                
+                orderDetails.innerHTML = `
+                    <div class="order-header">
+                        <h2>Order Details: ${order.orderNumber}</h2>
+                        <div>
+                            <button class="btn btn-primary" onclick="document.getElementById('supplierOrderDetails').classList.remove('active')">
+                                <i class="fas fa-arrow-left"></i> Back to List
+                            </button>
+                            <button class="btn btn-warning" id="exportCurrentSupplierToPdf">
+                                <i class="fas fa-file-pdf"></i> Export to PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="order-header">
+                        <div class="order-info">
+                            <div>
+                                <span>Order Date:</span>
+                                <span>${new Date(order.date).toLocaleDateString()}</span>
+                            </div>
+                            <div>
+                                <span>Supplier:</span>
+                                <span>${order.supplier}</span>
+                            </div>
+                        </div>
+                        <div class="order-info">
+                            <div>
+                                <span>Currency:</span>
+                                <span class="currency-display">
+                                    <img src="${getCurrencyFlag(order.currency)}" class="currency-flag" alt="${order.currency} Flag">
+                                    ${order.currency}
+                                </span>
+                            </div>
+                            <div>
+                                <span>Status:</span>
+                                <span class="status ${order.status === 'Order Shipped' ? 'shipped' : 'departed'}">${order.status}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Order Items (${order.currency})</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="50%">Item Description</th>
+                                <th width="15%">Quantity</th>
+                                <th width="15%">Unit Price</th>
+                                <th width="20%">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${order.items.map(item => `
+                                <tr>
+                                    <td>${item.description}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>${formatCurrency(convertCurrency(item.unitPrice, order.currency, order.exchangeRate), order.currency)}</td>
+                                    <td>${formatCurrency(convertCurrency(item.total, order.currency, order.exchangeRate), order.currency)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="3">Subtotal</td>
+                                <td>${formatCurrency(convertCurrency(order.subtotal, order.currency, order.exchangeRate), order.currency)}</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="3">Grand Total</td>
+                                <td>${formatCurrency(convertCurrency(order.total, order.currency, order.exchangeRate), order.currency)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    <div class="payment-section">
+                        <div class="payment-row">
+                            <span>Total Amount (${order.currency}):</span>
+                            <span>${formatCurrency(convertCurrency(order.total, order.currency, order.exchangeRate), order.currency)}</span>
+                        </div>
+                        <div class="payment-row">
+                            <span>Amount Paid (MVR):</span>
+                            <span>${formatCurrency(order.paidInMVR, 'MVR')}</span>
+                        </div>
+                        <div class="payment-row">
+                            <span>Amount Paid (${order.currency}):</span>
+                            <span>${formatCurrency(convertCurrency(order.paidInMVR, order.currency, order.exchangeRate), order.currency)}</span>
+                        </div>
+                    </div>
+                    
+                    ${order.notes ? `
+                    <div class="notes">
+                        <h3>Notes</h3>
+                        <p>${order.notes}</p>
+                    </div>
+                    ` : ''}
+                    
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print Order</button>
+                        <button class="btn btn-primary" onclick="document.getElementById('supplierOrderDetails').classList.remove('active')">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </button>
+                    </div>
+                `;
+                
+                // Add event listener to the export button
+                document.getElementById('exportCurrentSupplierToPdf').addEventListener('click', function() {
+                    exportSupplierOrderToPDF(order.firebaseId || order.orderNumber);
+                });
+            }
+            
+            function deleteSupplierOrder(firebaseId) {
+                database.ref('orders/' + firebaseId).remove()
+                    .then(() => {
+                        // The real-time listener will automatically update the table
+                        document.getElementById('supplierOrderDetails').classList.remove('active');
+                    })
+                    .catch(error => {
+                        alert('Error deleting order: ' + error.message);
+                    });
+            }
+            
+            function updateSupplierOrderStatus(firebaseId, newStatus) {
+                database.ref('orders/' + firebaseId + '/status').set(newStatus)
+                    .catch(error => {
+                        alert('Error updating status: ' + error.message);
+                    });
+            }
+            
+            function exportSupplierOrderToPDF(firebaseId) {
+                database.ref('orders/' + firebaseId).once('value')
+                    .then((snapshot) => {
+                        const order = snapshot.val();
+                        generateSupplierOrderPDF(order);
+                    })
+                    .catch(error => {
+                        alert('Error exporting to PDF: ' + error.message);
+                    });
+            }
+            
+            function generateSupplierOrderPDF(order) {
+                // Create a new jsPDF instance
+                const doc = new jsPDF();
+                
+                // Add title
+                doc.setFontSize(18);
+                doc.setTextColor(40, 40, 40);
+                doc.text(`Order Summary: ${order.orderNumber}`, 105, 15, { align: 'center' });
+                
+                // Add order details
+                doc.setFontSize(12);
+                doc.setTextColor(80, 80, 80);
+                
+                // Order info section
+                doc.text(`Order Date: ${new Date(order.date).toLocaleDateString()}`, 14, 25);
+                doc.text(`Supplier: ${order.supplier}`, 14, 32);
+                doc.text(`Currency: ${order.currency}`, 14, 39);
+                doc.text(`Status: ${order.status}`, 14, 46);
+                
+                // Add items table
+                const itemsData = order.items.map(item => [
+                    item.description,
+                    item.quantity,
+                    formatCurrencyForPDF(item.unitPrice, order.currency, order.exchangeRate),
+                    formatCurrencyForPDF(item.total, order.currency, order.exchangeRate)
+                ]);
+                
+                // Add subtotal and grand total rows
+                itemsData.push([
+                    { content: 'Subtotal', colSpan: 3, styles: { fontStyle: 'bold' } },
+                    { content: formatCurrencyForPDF(order.subtotal, order.currency, order.exchangeRate), styles: { fontStyle: 'bold' } }
+                ]);
+                
+                itemsData.push([
+                    { content: 'Grand Total', colSpan: 3, styles: { fontStyle: 'bold' } },
+                    { content: formatCurrencyForPDF(order.total, order.currency, order.exchangeRate), styles: { fontStyle: 'bold' } }
+                ]);
+                
+                doc.autoTable({
+                    startY: 55,
+                    head: [['Item Description', 'Quantity', 'Unit Price', 'Total']],
+                    body: itemsData,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [52, 152, 219],
+                        textColor: 255,
+                        fontStyle: 'bold'
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 'auto' },
+                        1: { cellWidth: 'auto' },
+                        2: { cellWidth: 'auto' },
+                        3: { cellWidth: 'auto' }
+                    },
+                    styles: {
+                        fontSize: 10,
+                        cellPadding: 3,
+                        overflow: 'linebreak'
+                    },
+                    margin: { left: 14 }
+                });
+                
+                // Add payment summary
+                const finalY = doc.lastAutoTable.finalY + 10;
+                doc.text('Payment Summary', 14, finalY);
+                
+                doc.text(`Total Amount (${order.currency}): ${formatCurrencyForPDF(order.total, order.currency, order.exchangeRate)}`, 14, finalY + 8);
+                doc.text(`Amount Paid (MVR): ${formatCurrencyForPDF(order.paidInMVR, 'MVR')}`, 14, finalY + 16);
+                doc.text(`Amount Paid (${order.currency}): ${formatCurrencyForPDF(convertCurrencyForPDF(order.paidInMVR, order.currency, order.exchangeRate), order.currency)}`, 14, finalY + 24);
+                
+                // Add notes if available
+                if (order.notes) {
+                    doc.text('Notes:', 14, finalY + 36);
+                    doc.text(order.notes, 20, finalY + 44, { maxWidth: 170 });
+                }
+                
+                // Add footer
+                doc.setFontSize(10);
+                doc.setTextColor(150, 150, 150);
+                doc.text(`Generated on ${new Date().toLocaleString()}`, 105, 285, { align: 'center' });
+                
+                // Save the PDF
+                doc.save(`Order_${order.orderNumber}.pdf`);
+            }
+            
+            function exportSupplierSummaryToPDF() {
+                // Create a new jsPDF instance
+                const doc = new jsPDF();
+                
+                // Add title
+                doc.setFontSize(18);
+                doc.setTextColor(40, 40, 40);
+                doc.text('Orders Summary Report', 105, 15, { align: 'center' });
+                
+                // Add summary information
+                doc.setFontSize(12);
+                doc.setTextColor(80, 80, 80);
+                
+                const totalOrders = document.getElementById('totalOrders').textContent;
+                const totalSubtotal = document.getElementById('totalSubtotal').textContent;
+                const totalPaid = document.getElementById('totalPaid').textContent;
+                
+                doc.text(`Total Orders: ${totalOrders}`, 14, 25);
+                doc.text(`Total Subtotal (MVR): ${totalSubtotal}`, 14, 32);
+                doc.text(`Total Amount Paid (MVR): ${totalPaid}`, 14, 39);
+                doc.text(`Report Date: ${new Date().toLocaleDateString()}`, 14, 46);
+                
+                // Get all orders from the table
+                const orders = [];
+                const rows = document.querySelectorAll('#supplierOrdersList tr');
+                
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 5) {
+                        orders.push({
+                            date: cells[0].textContent,
+                            orderNumber: cells[1].textContent,
+                            supplier: cells[2].textContent,
+                            subtotal: cells[3].textContent,
+                            paid: cells[4].textContent,
+                            status: cells[5].querySelector('select').value
+                        });
+                    }
+                });
+                
+                // Add orders table
+                const ordersData = orders.map(order => [
+                    order.date,
+                    order.orderNumber,
+                    order.supplier,
+                    order.subtotal,
+                    order.paid,
+                    order.status
+                ]);
+                
+                // Add grand totals row
+                const grandSubtotal = document.getElementById('supplierGrandSubtotal').textContent;
+                const grandPaid = document.getElementById('supplierGrandPaid').textContent;
+                
+                ordersData.push([
+                    { content: 'Grand Totals', colSpan: 2, styles: { fontStyle: 'bold' } },
+                    '',
+                    grandSubtotal,
+                    grandPaid,
+                    '',
+                    { content: '', styles: { fontStyle: 'bold' } }
+                ]);
+                
+                doc.autoTable({
+                    startY: 55,
+                    head: [['Date', 'Order #', 'Supplier', 'Subtotal', 'Paid (MVR)', 'Status']],
+                    body: ordersData,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [52, 152, 219],
+                        textColor: 255,
+                        fontStyle: 'bold'
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 'auto' },
+                        1: { cellWidth: 'auto' },
+                        2: { cellWidth: 'auto' },
+                        3: { cellWidth: 'auto' },
+                        4: { cellWidth: 'auto' },
+                        5: { cellWidth: 'auto' }
+                    },
+                    styles: {
+                        fontSize: 10,
+                        cellPadding: 3,
+                        overflow: 'linebreak'
+                    },
+                    margin: { left: 14 }
+                });
+                
+                // Add footer
+                doc.setFontSize(10);
+                doc.setTextColor(150, 150, 150);
+                doc.text(`Generated on ${new Date().toLocaleString()}`, 105, 285, { align: 'center' });
+                
+                // Save the PDF
+                doc.save(`Orders_Summary_${new Date().toISOString().slice(0,10)}.pdf`);
+            }
+            
+            // ==============================================
+            // EXPENSES MANAGEMENT FUNCTIONALITY
+            // ==============================================
+            const expenseItems = document.getElementById('expenseItems');
+            const addExpenseItemBtn = document.getElementById('addExpenseItem');
+            const submitExpenseBtn = document.getElementById('submitExpense');
+            const deleteAllExpensesBtn = document.getElementById('deleteAllExpenses');
+            const exportExpensesSummaryPdf = document.getElementById('exportExpensesSummaryPdf');
+            const expensePaymentsSection = document.getElementById('expensePaymentsSection');
+            const expenseTotalsSection = document.getElementById('expenseTotalsSection');
+            const totalWeightPaymentInput = document.getElementById('totalWeightPayment');
+            const totalClearencePaymentInput = document.getElementById('totalClearencePayment');
+            const expenseWeightTotalCell = document.getElementById('expenseWeightTotal');
+            const expenseClearenceTotalCell = document.getElementById('expenseClearenceTotal');
+            const expenseTotalCell = document.getElementById('expenseTotal');
+            
+            // Add initial empty row
+            addExpenseItemRow();
+            
+            // Add expense item row
+            addExpenseItemBtn.addEventListener('click', addExpenseItemRow);
+            
+            // Submit expense
+            submitExpenseBtn.addEventListener('click', submitExpense);
+            
+            // Delete all expenses
+            deleteAllExpensesBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete ALL expenses? This cannot be undone.')) {
+                    database.ref('expenses').remove()
+                        .then(() => {
+                            alert('All expenses have been deleted.');
+                            loadExpenses(); // Refresh the view
+                        })
+                        .catch(error => {
+                            alert('Error deleting expenses: ' + error.message);
+                        });
+                }
+            });
+            
+            // Export summary to PDF
+            exportExpensesSummaryPdf.addEventListener('click', exportExpensesSummaryToPDF);
+            
+            // Update totals when payment inputs change
+            totalWeightPaymentInput.addEventListener('input', updateExpenseTotals);
+            totalClearencePaymentInput.addEventListener('input', updateExpenseTotals);
+            
+            function addExpenseItemRow() {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" class="item-name" placeholder="Item name"></td>
+                    <td><input type="number" class="item-qty" min="1" value="1"></td>
+                    <td>
+                        <select class="item-category">
+                            ${EXPENSE_CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td><button type="button" class="btn btn-danger remove-item"><i class="fas fa-times"></i></button></td>
+                `;
+                expenseItems.appendChild(row);
+                
+                // Show payments section when first item is added
+                if (expenseItems.querySelectorAll('tr').length === 1) {
+                    expensePaymentsSection.style.display = 'block';
+                    expenseTotalsSection.style.display = 'block';
+                }
+                
+                // Add event listeners
+                const removeBtn = row.querySelector('.remove-item');
+                
+                removeBtn.addEventListener('click', () => {
+                    row.remove();
+                    // Hide payments section if no items left
+                    if (expenseItems.querySelectorAll('tr').length === 0) {
+                        expensePaymentsSection.style.display = 'none';
+                        expenseTotalsSection.style.display = 'none';
+                    }
+                });
+            }
+            
+            function updateExpenseTotals() {
+                const weightTotal = parseFloat(totalWeightPaymentInput.value) || 0;
+                const clearenceTotal = parseFloat(totalClearencePaymentInput.value) || 0;
+                const total = weightTotal + clearenceTotal;
+                
+                expenseWeightTotalCell.textContent = weightTotal.toFixed(2);
+                expenseClearenceTotalCell.textContent = clearenceTotal.toFixed(2);
+                expenseTotalCell.textContent = total.toFixed(2);
+            }
+            
+            function submitExpense() {
+                const expenseDate = document.getElementById('expenseDate').value;
+                const orderNumber = document.getElementById('expenseOrderNumber').value;
+                const notes = document.getElementById('expenseNotes').value;
+                const category = document.getElementById('expenseCategory').value;
+                const weightTotal = parseFloat(totalWeightPaymentInput.value) || 0;
+                const clearenceTotal = parseFloat(totalClearencePaymentInput.value) || 0;
+                const total = weightTotal + clearenceTotal;
+                
+                if (!expenseDate) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                const rows = document.querySelectorAll('#expenseItems tr');
+                if (rows.length === 0) {
+                    alert('Please add at least one item');
+                    return;
+                }
+                
+                if (total <= 0) {
+                    alert('Please enter valid payment amounts');
+                    return;
+                }
+                
+                // Collect expense items
+                const items = [];
+                rows.forEach(row => {
+                    const name = row.querySelector('.item-name').value || 'Unnamed Item';
+                    const category = row.querySelector('.item-category').value;
+                    const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                    
+                    items.push({
+                        name: name,
+                        category: category,
+                        quantity: qty
+                    });
+                });
+                
+                // Create expense object
+                const expense = {
+                    expenseNumber: generateExpenseNumber(),
+                    date: expenseDate,
+                    orderNumber: orderNumber || '',
+                    items: items,
+                    category: category,
+                    weightTotal: weightTotal,
+                    clearenceTotal: clearenceTotal,
+                    total: total,
+                    notes: notes,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Save to Firebase
+                saveExpenseToFirebase(expense);
+            }
+            
+            function generateExpenseNumber() {
+                const now = new Date();
+                return 'EXP-' + now.getFullYear() + 
+                       String(now.getMonth() + 1).padStart(2, '0') + 
+                       String(now.getDate()).padStart(2, '0') + '-' + 
+                       String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+            }
+            
+            function saveExpenseToFirebase(expense) {
+                // Push the new expense to Firebase
+                const newExpenseRef = database.ref('expenses').push();
+                newExpenseRef.set(expense)
+                    .then(() => {
+                        // Show success and switch to summary tab
+                        alert(`Expense submitted successfully!\nExpense Number: ${expense.expenseNumber}`);
+                        
+                        // Switch to summary tab and load expenses
+                        document.querySelector('#expensesManagement .sub-tab[data-subtab="expenses-summary"]').click();
+                        
+                        // Reset form
+                        resetExpenseForm();
+                    })
+                    .catch(error => {
+                        alert('Error saving expense: ' + error.message);
+                    });
+            }
+            
+            function resetExpenseForm() {
+                document.getElementById('expenseDate').value = '';
+                document.getElementById('expenseOrderNumber').value = '';
+                document.getElementById('expenseNotes').value = '';
+                document.getElementById('totalWeightPayment').value = '0.00';
+                document.getElementById('totalClearencePayment').value = '0.00';
+                expenseItems.innerHTML = '';
+                expensePaymentsSection.style.display = 'none';
+                expenseTotalsSection.style.display = 'none';
+                addExpenseItemRow();
+            }
+            
+            function loadExpenses() {
+                const expensesList = document.getElementById('expensesList');
+                const expenseDetails = document.getElementById('expenseDetails');
+                const loadingIndicator = document.getElementById('expensesLoadingIndicator');
+                const expensesTable = document.getElementById('expensesTable');
+                const summaryTotals = document.getElementById('expensesSummaryTotals');
+                
+                // Show loading indicator
+                loadingIndicator.style.display = 'block';
+                expensesTable.style.display = 'none';
+                summaryTotals.style.display = 'none';
+                
+                // Listen for real-time updates from Firebase
+                database.ref('expenses').on('value', (snapshot) => {
+                    const expenses = [];
+                    let totalWeight = 0;
+                    let totalClearence = 0;
+                    let totalAmount = 0;
+                    
+                    snapshot.forEach((childSnapshot) => {
+                        const expense = childSnapshot.val();
+                        expense.firebaseId = childSnapshot.key; // Store Firebase ID for updates
+                        expenses.push(expense);
+                        
+                        // Calculate totals
+                        totalWeight += expense.weightTotal || 0;
+                        totalClearence += expense.clearenceTotal || 0;
+                        totalAmount += expense.total || 0;
+                    });
+                    
+                    // Update summary totals
+                    document.getElementById('totalExpenses').textContent = expenses.length;
+                    document.getElementById('totalWeight').textContent = totalWeight.toFixed(2);
+                    document.getElementById('totalClearence').textContent = totalClearence.toFixed(2);
+                    document.getElementById('totalExpensesAmount').textContent = totalAmount.toFixed(2);
+                    
+                    if (expenses.length === 0) {
+                        expensesList.innerHTML = '<tr><td colspan="7" style="text-align: center;">No expenses found</td></tr>';
+                        expenseDetails.classList.remove('active');
+                    } else {
+                        renderExpensesTable(expenses);
+                    }
+                    
+                    // Hide loading indicator and show table and totals
+                    loadingIndicator.style.display = 'none';
+                    expensesTable.style.display = 'table';
+                    summaryTotals.style.display = 'grid';
+                });
+            }
+            
+            function renderExpensesTable(expenses) {
+                const expensesList = document.getElementById('expensesList');
+                
+                // Sort expenses by date (newest first)
+                expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // Calculate grand totals
+                let grandWeight = 0;
+                let grandClearence = 0;
+                let grandTotal = 0;
+                
+                // Render expenses table
+                expensesList.innerHTML = expenses.map(expense => {
+                    // Add to grand totals
+                    grandWeight += expense.weightTotal || 0;
+                    grandClearence += expense.clearenceTotal || 0;
+                    grandTotal += expense.total || 0;
+                    
+                    return `
+                        <tr data-expense-id="${expense.expenseNumber}" data-firebase-id="${expense.firebaseId}">
+                            <td>${new Date(expense.date).toLocaleDateString()}</td>
+                            <td>${expense.expenseNumber}</td>
+                            <td>${expense.orderNumber || 'N/A'}</td>
+                            <td>${expense.weightTotal.toFixed(2)}</td>
+                            <td>${expense.clearenceTotal.toFixed(2)}</td>
+                            <td>${expense.total.toFixed(2)}</td>
+                            <td>
+                                <button class="btn btn-primary view-expense"><i class="fas fa-eye"></i> Summary</button>
+                                <button class="btn btn-danger delete-expense" data-expense="${expense.firebaseId}"><i class="fas fa-trash-alt"></i> Delete</button>
+                                <button class="btn btn-warning export-expense-pdf" data-expense="${expense.firebaseId}"><i class="fas fa-file-pdf"></i> PDF</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                // Update grand totals row
+                document.getElementById('expensesGrandWeight').textContent = grandWeight.toFixed(2);
+                document.getElementById('expensesGrandClearence').textContent = grandClearence.toFixed(2);
+                document.getElementById('expensesGrandTotal').textContent = grandTotal.toFixed(2);
+                
+                // Add event listeners to view buttons
+                document.querySelectorAll('.view-expense').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const firebaseId = this.closest('tr').dataset.firebaseId;
+                        showExpenseDetails(firebaseId);
+                    });
+                });
+                
+                // Add event listeners to delete buttons
+                document.querySelectorAll('.delete-expense').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const expenseId = this.dataset.expense;
+                        if (confirm(`Are you sure you want to delete this expense?`)) {
+                            deleteExpense(expenseId);
+                        }
+                    });
+                });
+                
+                // Add event listeners to PDF export buttons
+                document.querySelectorAll('.export-expense-pdf').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const firebaseId = this.dataset.expense;
+                        exportExpenseToPDF(firebaseId);
+                    });
+                });
+            }
+            
+            function showExpenseDetails(firebaseId) {
+                const expenseDetails = document.getElementById('expenseDetails');
+                expenseDetails.innerHTML = '<div class="loading">Loading expense details...</div>';
+                expenseDetails.classList.add('active');
+                
+                database.ref('expenses/' + firebaseId).once('value')
+                    .then((snapshot) => {
+                        const expense = snapshot.val();
+                        renderExpenseDetails(expense);
+                    })
+                    .catch(error => {
+                        expenseDetails.innerHTML = `<div class="alert">Error loading expense: ${error.message}</div>`;
+                    });
+            }
+            
+            function renderExpenseDetails(expense) {
+                const expenseDetails = document.getElementById('expenseDetails');
+                
+                expenseDetails.innerHTML = `
+                    <div class="expense-header">
+                        <h2>Expense Details: ${expense.expenseNumber}</h2>
+                        <div>
+                            <button class="btn btn-primary" onclick="document.getElementById('expenseDetails').classList.remove('active')">
+                                <i class="fas fa-arrow-left"></i> Back to List
+                            </button>
+                            <button class="btn btn-warning" id="exportCurrentExpenseToPdf">
+                                <i class="fas fa-file-pdf"></i> Export to PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="expense-header">
+                        <div class="expense-info">
+                            <div>
+                                <span>Expense Date:</span>
+                                <span>${new Date(expense.date).toLocaleDateString()}</span>
+                            </div>
+                            <div>
+                                <span>Order Number:</span>
+                                <span>${expense.orderNumber || 'N/A'}</span>
+                            </div>
+                            <div>
+                                <span>Category:</span>
+                                <span>${expense.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Expense Items</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="40%">Item Name</th>
+                                <th width="15%">Quantity</th>
+                                <th width="40%">Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${expense.items.map(item => `
+                                <tr>
+                                    <td>${item.name}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>${item.category}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    
+                    <h3 style="margin-top: 20px;">Payment Summary</h3>
+                    <table>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td>Total Weight Payment (MVR)</td>
+                                <td>${expense.weightTotal.toFixed(2)}</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td>Total Clearence Payment (MVR)</td>
+                                <td>${expense.clearenceTotal.toFixed(2)}</td>
+                            </tr>
+                            <tr class="grand-total-row">
+                                <td>Grand Total (MVR)</td>
+                                <td>${expense.total.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    ${expense.notes ? `
+                    <div class="notes">
+                        <h3>Notes</h3>
+                        <p>${expense.notes}</p>
+                    </div>
+                    ` : ''}
+                    
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print Expense</button>
+                        <button class="btn btn-primary" onclick="document.getElementById('expenseDetails').classList.remove('active')">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </button>
+                    </div>
+                `;
+                
+                // Add event listener to the export button
+                document.getElementById('exportCurrentExpenseToPdf').addEventListener('click', function() {
+                    exportExpenseToPDF(expense.firebaseId || expense.expenseNumber);
+                });
+            }
+            
+            function deleteExpense(firebaseId) {
+                database.ref('expenses/' + firebaseId).remove()
+                    .then(() => {
+                        // The real-time listener will automatically update the table
+                        document.getElementById('expenseDetails').classList.remove('active');
+                    })
+                    .catch(error => {
+                        alert('Error deleting expense: ' + error.message);
+                    });
+            }
+            
+            function exportExpenseToPDF(firebaseId) {
+                database.ref('expenses/' + firebaseId).once('value')
+                    .then((snapshot) => {
+                        const expense = snapshot.val();
+                        generateExpensePDF(expense);
+                    })
+                    .catch(error => {
+                        alert('Error exporting to PDF: ' + error.message);
+                    });
+            }
+            
+            function generateExpensePDF(expense) {
+                // Create a new jsPDF instance
+                const doc = new jsPDF();
+                
+                // Add title
+                doc.setFontSize(18);
+                doc.setTextColor(40, 40, 40);
+                doc.text(`Expense Summary: ${expense.expenseNumber}`, 105, 15, { align: 'center' });
+                
+                // Add expense details
+                doc.setFontSize(12);
+                doc.setTextColor(80, 80, 80);
+                
+                // Expense info section
+                doc.text(`Expense Date: ${new Date(expense.date).toLocaleDateString()}`, 14, 25);
+                doc.text(`Order Number: ${expense.orderNumber || 'N/A'}`, 14, 32);
+                doc.text(`Category: ${expense.category}`, 14, 39);
+                
+                // Add items table
+                const itemsData = expense.items.map(item => [
+                    item.name,
+                    item.quantity,
+                    item.category
+                ]);
+                
+                doc.autoTable({
+                    startY: 45,
+                    head: [['Item Name', 'Quantity', 'Category']],
+                    body: itemsData,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [52, 152, 219],
+                        textColor: 255,
+                        fontStyle: 'bold'
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 'auto' },
+                        1: { cellWidth: 'auto' },
+                        2: { cellWidth: 'auto' }
+                    },
+                    styles: {
+                        fontSize: 10,
+                        cellPadding: 3,
+                        overflow: 'linebreak'
+                    },
+                    margin: { left: 14 }
+                });
+                
+                // Add payment summary
+                const finalY = doc.lastAutoTable.finalY + 10;
+                doc.text('Payment Summary', 14, finalY);
+                
+                doc.text(`Total Weight Payment (MVR): ${expense.weightTotal.toFixed(2)}`, 14, finalY + 8);
+                doc.text(`Total Clearence Payment (MVR): ${expense.clearenceTotal.toFixed(2)}`, 14, finalY + 16);
+                doc.text(`Grand Total (MVR): ${expense.total.toFixed(2)}`, 14, finalY + 24);
+                
+                // Add notes if available
+                if (expense.notes) {
+                    doc.text('Notes:', 14, finalY + 36);
+                    doc.text(expense.notes, 20, finalY + 44, { maxWidth: 170 });
+                }
+                
+                // Add footer
+                doc.setFontSize(10);
+                doc.setTextColor(150, 150, 150);
+                doc.text(`Generated on ${new Date().toLocaleString()}`, 105, 285, { align: 'center' });
+                
+                // Save the PDF
+                doc.save(`Expense_${expense.expenseNumber}.pdf`);
+            }
+            
+            function exportExpensesSummaryToPDF() {
+                // Create a new jsPDF instance
+                const doc = new jsPDF();
+                
+                // Add title
+                doc.setFontSize(18);
+                doc.setTextColor(40, 40, 40);
+                doc.text('Expenses Summary Report', 105, 15, { align: 'center' });
+                
+                // Add summary information
+                doc.setFontSize(12);
+                doc.setTextColor(80, 80, 80);
+                
+                const totalExpenses = document.getElementById('totalExpenses').textContent;
+                const totalWeight = document.getElementById('totalWeight').textContent;
+                const totalClearence = document.getElementById('totalClearence').textContent;
+                const totalAmount = document.getElementById('totalExpensesAmount').textContent;
+                
+                doc.text(`Total Expenses: ${totalExpenses}`, 14, 25);
+                doc.text(`Total Weight (MVR): ${totalWeight}`, 14, 32);
+                doc.text(`Total Clearence (MVR): ${totalClearence}`, 14, 39);
+                doc.text(`Total Amount (MVR): ${totalAmount}`, 14, 46);
+                doc.text(`Report Date: ${new Date().toLocaleDateString()}`, 14, 53);
+                
+                // Get all expenses from the table
+                const expenses = [];
+                const rows = document.querySelectorAll('#expensesList tr');
+                
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 6) {
+                        expenses.push({
+                            date: cells[0].textContent,
+                            expenseNumber: cells[1].textContent,
+                            orderNumber: cells[2].textContent,
+                            weight: cells[3].textContent,
+                            clearence: cells[4].textContent,
+                            total: cells[5].textContent
+                        });
+                    }
+                });
+                
+                // Add expenses table
+                const expensesData = expenses.map(expense => [
+                    expense.date,
+                    expense.expenseNumber,
+                    expense.orderNumber,
+                    expense.weight,
+                    expense.clearence,
+                    expense.total
+                ]);
+                
+                // Add grand totals row
+                const grandWeight = document.getElementById('expensesGrandWeight').textContent;
+                const grandClearence = document.getElementById('expensesGrandClearence').textContent;
+                const grandTotal = document.getElementById('expensesGrandTotal').textContent;
+                
+                expensesData.push([
+                    { content: 'Grand Totals', colSpan: 2, styles: { fontStyle: 'bold' } },
+                    '',
+                    grandWeight,
+                    grandClearence,
+                    { content: grandTotal, styles: { fontStyle: 'bold' } }
+                ]);
+                
+                doc.autoTable({
+                    startY: 65,
+                    head: [['Date', 'Expense #', 'Order #', 'Weight', 'Clearence', 'Total']],
+                    body: expensesData,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [52, 152, 219],
+                        textColor: 255,
+                        fontStyle: 'bold'
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 'auto' },
+                        1: { cellWidth: 'auto' },
+                        2: { cellWidth: 'auto' },
+                        3: { cellWidth: 'auto' },
+                        4: { cellWidth: 'auto' },
+                        5: { cellWidth: 'auto' }
+                    },
+                    styles: {
+                        fontSize: 10,
+                        cellPadding: 3,
+                        overflow: 'linebreak'
+                    },
+                    margin: { left: 14 }
+                });
+                
+                // Add footer
+                doc.setFontSize(10);
+                doc.setTextColor(150, 150, 150);
+                doc.text(`Generated on ${new Date().toLocaleString()}`, 105, 285, { align: 'center' });
+                
+                // Save the PDF
+                doc.save(`Expenses_Summary_${new Date().toISOString().slice(0,10)}.pdf`);
+            }
+            
+            // Helper functions for currency formatting
+            function formatCurrencyForPDF(amount, currency, exchangeRate) {
+                const convertedAmount = convertCurrencyForPDF(amount, currency, exchangeRate);
+                const symbols = {
+                    MVR: 'MVR',
+                    USD: '$',
+                    AED: 'AED',
+                    CNY: '¥',
+                    EUR: '€',
+                    IDR: 'Rp',
+                    INR: '₹',
+                    JPY: '¥',
+                    LKR: 'Rs',
+                    MYR: 'RM',
+                    NZD: 'NZ$',
+                    SAR: 'SAR',
+                    SEK: 'kr',
+                    SGD: 'S$',
+                    THB: '฿'
+                };
+                return `${symbols[currency] || currency} ${convertedAmount.toFixed(2)}`;
+            }
+            
+            function convertCurrencyForPDF(amountInMVR, targetCurrency, exchangeRate) {
+                if (targetCurrency === 'MVR') return amountInMVR;
+                return amountInMVR / (exchangeRate || 1);
+            }
+            
+            function getCurrencyFlag(currency) {
+                const flagUrls = {
+                    MVR: 'https://flagcdn.com/w20/mv.png',
+                    USD: 'https://flagcdn.com/w20/us.png',
+                    AED: 'https://flagcdn.com/w20/ae.png',
+                    CNY: 'https://flagcdn.com/w20/cn.png',
+                    EUR: 'https://flagcdn.com/w20/eu.png',
+                    IDR: 'https://flagcdn.com/w20/id.png',
+                    INR: 'https://flagcdn.com/w20/in.png',
+                    JPY: 'https://flagcdn.com/w20/jp.png',
+                    LKR: 'https://flagcdn.com/w20/lk.png',
+                    MYR: 'https://flagcdn.com/w20/my.png',
+                    NZD: 'https://flagcdn.com/w20/nz.png',
+                    SAR: 'https://flagcdn.com/w20/sa.png',
+                    SEK: 'https://flagcdn.com/w20/se.png',
+                    SGD: 'https://flagcdn.com/w20/sg.png',
+                    THB: 'https://flagcdn.com/w20/th.png'
+                };
+                return flagUrls[currency] || '';
+            }
+        });
+    </script>
+</body>
+</html>
